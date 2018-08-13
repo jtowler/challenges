@@ -1,0 +1,8 @@
+.idea
+project/target
+.gitignore
+README.md
+build.sbt
+project/build.properties
+src/
+target/
