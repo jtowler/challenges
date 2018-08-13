@@ -2,6 +2,7 @@ package gol
 
 object Main extends App{
 
-  println("GAME OF LIFE")
+  val board = Board(10, 10, List((1,1)))
+  board.display()
 
 }
