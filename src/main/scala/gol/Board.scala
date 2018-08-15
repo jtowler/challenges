@@ -30,6 +30,8 @@ class Board(val tiles: List[List[Int]]) {
     new Board(newTiles)
   }
 
+  def deadBoard: Boolean = tiles.flatten.foldRight(0)(_ max _) == 0
+
 }
 
 object Board {
