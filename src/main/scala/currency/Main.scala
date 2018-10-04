@@ -29,7 +29,8 @@ object Main extends App {
     val rate = convert(currStr)
     val convertedAmount = amount * rate
     val convertedString = "%.2f".format(convertedAmount).toDouble
-   registerModule( println(f"$amount $from is equivalent to $convertedString $to"))
+    val printString: String = amount.toString + " " + from + " is equivalent to " + convertedString.toString + " " + to
+   registerModule( println(printString))
   }
 
   val from = "USD"
