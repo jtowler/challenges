@@ -1,6 +1,7 @@
 package minesweeper
 
 import scala.util.Random
+import Board.neighbours
 
 class Board(val tiles: List[List[Boolean]], val displayTiles: List[List[Char]]) {
 
@@ -21,13 +22,12 @@ class Board(val tiles: List[List[Boolean]], val displayTiles: List[List[Char]]) 
 
     getSurroundingMines(x, y) match {
       case 0 => updateDisplay(x, y, ' ', oldDisplay)
-      case n => updateDisplay(x, y, n.toChar, oldDisplay)
+      case n => updateDisplay(x, y, n.toString.head, oldDisplay)
     }
 
   }
 
   def getSurroundingMines(x: Int, y: Int): Int = {
-    val neighbours = List((-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1))
     neighbours.count { case (yP, xP) =>
       x + xP >= 0 && x + xP < xSize && y + yP >= 0 && y + yP < ySize && tiles(y + yP)(x + xP)
     }
@@ -40,9 +40,32 @@ class Board(val tiles: List[List[Boolean]], val displayTiles: List[List[Char]]) 
       if (ys == y && xs == x) c else oldDisplay(y)(x))
   }
 
+  def hasFinishedClearing(display: List[List[Char]]): Boolean = {
+
+    val blanks = for {
+      y <- 0 until ySize
+      x <- 0 until xSize
+      if display(y)(x) == ' '
+      (ny, nx) <- neighbours
+    } yield (y + ny, x + nx)
+    val allTiles = blanks.distinct.map(a => display(a._1)(a._2))
+    allTiles contains '#'
+  }
+
+  def display(): Unit = {
+    println("+ - " * xSize + "+")
+    displayTiles foreach {
+      ln =>
+        println(ln mkString("| ", " | ", " |"))
+        println("+ - " * xSize + "+")
+    }
+  }
+
 }
 
 object Board {
+
+  val neighbours = List((-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1))
 
   def apply(x: Int, y: Int, mines: Int): Board = {
     val mineIndices = randomInts(x * y, mines, List.empty)
