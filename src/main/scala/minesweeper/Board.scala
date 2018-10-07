@@ -10,7 +10,10 @@ class Board(val tiles: List[List[Boolean]], val displayTiles: List[List[Char]]) 
   val nMines: Int = tiles.map(_.count(_ == true)).sum
 
   def clearTile(x: Int, y: Int): Board = {
-    if (tiles(y)(x)) Board(xSize, ySize, nMines)
+    if (tiles(y)(x)) {
+      println("BOOM!")
+      Board(xSize, ySize, nMines)
+    }
     else if (displayTiles(y)(x) != '#') Board(tiles, displayTiles)
     else {
       val newDisplay = clearAll(x, y, displayTiles)
@@ -19,12 +22,19 @@ class Board(val tiles: List[List[Boolean]], val displayTiles: List[List[Char]]) 
   }
 
   def clearAll(x: Int, y: Int, oldDisplay: List[List[Char]]): List[List[Char]] = {
+    if (checkInBoundsAndNotMine(x, y)) {
+      val newTiles = updateOneTile(x, y, oldDisplay)
+      clearAll(x, y - 1, clearAll(x, y + 1, clearAll(x - 1, y, clearAll(x + 1, y, newTiles))))
+    } else {
+      oldDisplay
+    }
+  }
 
+  def updateOneTile(x: Int, y: Int, oldDisplay: List[List[Char]]): List[List[Char]] = {
     getSurroundingMines(x, y) match {
       case 0 => updateDisplay(x, y, ' ', oldDisplay)
       case n => updateDisplay(x, y, n.toString.head, oldDisplay)
     }
-
   }
 
   def getSurroundingMines(x: Int, y: Int): Int = {
@@ -51,6 +61,10 @@ class Board(val tiles: List[List[Boolean]], val displayTiles: List[List[Char]]) 
     val allTiles = blanks.distinct.map(a => display(a._1)(a._2))
     allTiles contains '#'
   }
+
+  def checkInBoundsAndNotMine(x: Int, y: Int): Boolean =
+    x >= 0 && x < xSize && y >= 0 && y < ySize && !tiles(y)(x)
+
 
   def display(): Unit = {
     println("+ - " * xSize + "+")
