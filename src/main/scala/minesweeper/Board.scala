@@ -16,15 +16,27 @@ class Board(val tiles: List[List[Boolean]], val displayTiles: List[List[Char]]) 
     }
     else if (displayTiles(y)(x) != '#') Board(tiles, displayTiles)
     else {
-      val newDisplay = clearAll(x, y, displayTiles)
+      val positiveDisplay = clearAllPositive(x, y, displayTiles)
+      val newDisplay = clearAllNegative(x, y, positiveDisplay)
       Board(tiles, newDisplay)
     }
   }
 
-  def clearAll(x: Int, y: Int, oldDisplay: List[List[Char]]): List[List[Char]] = {
+  def clearAllPositive(x: Int, y: Int, oldDisplay: List[List[Char]]): List[List[Char]] = {
     if (checkInBoundsAndNotMine(x, y)) {
       val newTiles = updateOneTile(x, y, oldDisplay)
-      clearAll(x, y - 1, clearAll(x, y + 1, clearAll(x - 1, y, clearAll(x + 1, y, newTiles))))
+      val newTiles2 = clearAllPositive(x + 1, y, newTiles)
+      clearAllPositive(x, y + 1, newTiles2)
+    } else {
+      oldDisplay
+    }
+  }
+
+  def clearAllNegative(x: Int, y: Int, oldDisplay: List[List[Char]]): List[List[Char]] = {
+    if (checkInBoundsAndNotMine(x, y)) {
+      val newTiles = updateOneTile(x, y, oldDisplay)
+      val newTiles2 = clearAllNegative(x - 1, y, newTiles)
+      clearAllNegative(x, y - 1, newTiles2)
     } else {
       oldDisplay
     }
@@ -44,8 +56,6 @@ class Board(val tiles: List[List[Boolean]], val displayTiles: List[List[Char]]) 
   }
 
   def updateDisplay(x: Int, y: Int, c: Char, oldDisplay: List[List[Char]]): List[List[Char]] = {
-    val xSize: Int = tiles.headOption.getOrElse(List.empty).size
-    val ySize: Int = tiles.size
     List.tabulate(ySize, xSize)((ys, xs) =>
       if (ys == y && xs == x) c else oldDisplay(y)(x))
   }
