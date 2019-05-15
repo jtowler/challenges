@@ -24,7 +24,12 @@ class Board(tiles: List[List[Option[Int]]]) {
     reduceLeft(list.reverse).reverse
   }
 
-
+  def move(dir: Direction): Board = dir match {
+    case Left => new Board(tiles.map(l => reduceLeft(l)))
+    case Right => new Board(tiles.map(l => reduceRight(l)))
+    case Up => new Board(tiles.transpose.map(l => reduceLeft(l)).transpose)
+    case Up => new Board(tiles.transpose.map(l => reduceRight(l)).transpose)
+  }
 
 
 }
