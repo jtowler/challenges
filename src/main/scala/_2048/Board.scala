@@ -9,6 +9,17 @@ object Right extends Direction
 
 class Board(tiles: List[List[Option[Int]]]) {
 
+  private def hasFreeSpace = tiles.flatten.count(_.isDefined) < 16
+
+  private def getRandomSpace: (Int, Int) = {
+    val r = scala.util.Random
+    def go(): (Int, Int) = (r.nextInt(4), r.nextInt(4)) match {
+      case (a, b) if tiles(a)(b).isEmpty => (a, b)
+      case _ => go()
+    }
+    go()
+  }
+
   private def reduceLeft(list: List[Option[Int]]): List[Option[Int]] = {
     def go(in: List[Int], acc: List[Int]): List[Int] = in match {
       case h1 :: h2 :: t if h1 == h2 => go(t, acc :+ (h1 + h2))
