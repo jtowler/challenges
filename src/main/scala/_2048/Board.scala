@@ -20,6 +20,12 @@ class Board(tiles: List[List[Option[Int]]]) {
     go()
   }
 
+  private def addRandomTile: Board = {
+    val v = if (scala.util.Random.nextDouble > 0.9) 4 else 2
+    val (y, x) = getRandomSpace
+    new Board(tiles.updated(y, tiles(y).updated(x, Option(v))))
+  }
+
   private def reduceLeft(list: List[Option[Int]]): List[Option[Int]] = {
     def go(in: List[Int], acc: List[Int]): List[Int] = in match {
       case h1 :: h2 :: t if h1 == h2 => go(t, acc :+ (h1 + h2))
