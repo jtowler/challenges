@@ -45,10 +45,22 @@ object Alphabet {
     val sentences: Array[String] = msg.split("\\.")
     sentences.map {
       sentence =>
-        sentence.split("\\W+").map { word =>
+        sentence.split("\\s+").map { word =>
           word.map { c =>
             alphabet.getOrElse(c, " ")
           }.mkString("   ")
+        }.mkString("       ")
+    }.mkString("")
+  }
+
+  def fromMorse(msg: String): String = {
+    val sentences: Array[String] = msg.split("\\s{7}")
+    sentences.map {
+      sentence =>
+        sentence.split("\\s{3}").map { word =>
+          alphabet.filter {
+            case (_, v) => v == word }
+            .keys.headOption.getOrElse(' ')
         }.mkString("       ")
     }.mkString("")
   }
