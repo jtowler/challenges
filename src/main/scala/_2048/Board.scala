@@ -55,6 +55,9 @@ class Board(tiles: List[List[Option[Int]]]) {
     case Up => new Board(tiles.transpose.map(l => reduceRight(l)).transpose)
   }
 
+  def display(): Unit = {
+    tiles.foreach(x => println(x.map(y => if (y.isDefined) y.getOrElse(0).toString else " ").mkString(" ")))
+  }
 
 }
 
