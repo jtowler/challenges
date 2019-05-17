@@ -11,19 +11,20 @@ object Down extends Direction
 object Right extends Direction
 
 
-class Board(tiles: List[List[Option[Int]]]) {
+class Board(val tiles: List[List[Option[Int]]]) {
 
   private def hasFreeSpace = tiles.flatten.count(_.isDefined) < 16
 
   private def getRandomSpace: (Int, Int) = {
     val r = scala.util.Random
 
-    def go(): (Int, Int) = (r.nextInt(4), r.nextInt(4)) match {
-      case (a, b) if tiles(a)(b).isEmpty => (a, b)
-      case _ => go()
-    }
+    val freeSpaces = for {
+      x <- 0 until 4
+      y <- 0 until 4
+      if tiles(y)(x).isEmpty
+    } yield (y, x)
 
-    go()
+    r.shuffle(freeSpaces).headOption.getOrElse((-1, -1))
   }
 
   private def addRandomTile: Board = {
@@ -52,7 +53,7 @@ class Board(tiles: List[List[Option[Int]]]) {
     case Left => new Board(tiles.map(l => reduceLeft(l)))
     case Right => new Board(tiles.map(l => reduceRight(l)))
     case Up => new Board(tiles.transpose.map(l => reduceLeft(l)).transpose)
-    case Up => new Board(tiles.transpose.map(l => reduceRight(l)).transpose)
+    case Down => new Board(tiles.transpose.map(l => reduceRight(l)).transpose)
   }
 
   def display(): Unit = {
