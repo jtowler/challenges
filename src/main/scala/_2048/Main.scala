@@ -15,7 +15,7 @@ object Main extends App {
   def go(board: Board): Unit = {
     board.display()
     val dir = getInput
-    go(board.move(dir))
+    go(board.moveAndAdd(dir))
   }
 
   go(Board.init)
