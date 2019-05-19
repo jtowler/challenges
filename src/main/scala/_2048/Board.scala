@@ -36,7 +36,7 @@ class Board(val tiles: List[List[Option[Int]]]) {
   private def reduceLeft(list: List[Option[Int]]): List[Option[Int]] = {
     def go(in: List[Int], acc: List[Int]): List[Int] = in match {
       case h1 :: h2 :: t if h1 == h2 => go(t, acc :+ (h1 + h2))
-      case h1 :: h2 :: t => go(t, acc ++ List(h1, h2))
+      case h :: t => go(t, acc :+ h)
       case _ => acc
     }
 
@@ -55,6 +55,8 @@ class Board(val tiles: List[List[Option[Int]]]) {
     case Up => new Board(tiles.transpose.map(l => reduceLeft(l)).transpose)
     case Down => new Board(tiles.transpose.map(l => reduceRight(l)).transpose)
   }
+
+  def moveAndAdd(dir: Direction): Board = move(dir).addRandomTile
 
   def display(): Unit = {
     tiles.foreach(x => println(x.map(y => if (y.isDefined) y.getOrElse(0).toString else " ").mkString(" ")))

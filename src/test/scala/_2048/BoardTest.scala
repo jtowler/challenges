@@ -73,4 +73,21 @@ class BoardTest extends FlatSpec with Matchers {
     actual shouldBe expected
   }
 
+  it should "not lose tiles when not combining" in {
+    val b = new Board(List(
+      List(None, None, None, None),
+      List(None, Some(2), None, None),
+      List(Some(4), None, None, None),
+      List(None, None, None, None)
+    ))
+    val actual = b.move(Up).tiles
+    val expected = List(
+      List(Some(4), Some(2), None, None),
+      List(None, None, None, None),
+      List(None, None, None, None),
+      List(None, None, None, None)
+    )
+    actual shouldBe expected
+  }
+
 }
