@@ -11,7 +11,7 @@ class BoardTest extends FlatSpec with Matchers {
       List(None, None, None, None),
       List(None, Some(2), None, None),
       List(None, Some(2), None, None)
-    ))
+    ), 0)
     val actual = b.move(Up).tiles
     val expected = List(
       List(None, Some(4), None, None),
@@ -28,7 +28,7 @@ class BoardTest extends FlatSpec with Matchers {
       List(None, None, None, None),
       List(None, Some(2), None, None),
       List(None, Some(2), None, None)
-    ))
+    ), 0)
     val actual = b.move(Down).tiles
     val expected = List(
       List(None, None, None, None),
@@ -45,7 +45,7 @@ class BoardTest extends FlatSpec with Matchers {
       List(None, None, None, None),
       List(Some(2), Some(2), None, None),
       List(None, None, None, None)
-    ))
+    ), 0)
     val actual = b.move(Left).tiles
     val expected = List(
       List(None, None, None, None),
@@ -62,7 +62,7 @@ class BoardTest extends FlatSpec with Matchers {
       List(None, None, None, None),
       List(Some(2), Some(2), None, None),
       List(None, None, None, None)
-    ))
+    ), 0)
     val actual = b.move(Right).tiles
     val expected = List(
       List(None, None, None, None),
@@ -79,7 +79,7 @@ class BoardTest extends FlatSpec with Matchers {
       List(None, Some(2), None, None),
       List(Some(4), None, None, None),
       List(None, None, None, None)
-    ))
+    ), 0)
     val actual = b.move(Up).tiles
     val expected = List(
       List(Some(4), Some(2), None, None),
