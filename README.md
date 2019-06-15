@@ -5,4 +5,3 @@ Collection of challenges from various sources.
   * `currency` - currency converter with live conversion rates
   * `gol` - simple implementation of Conway's Game of Life
   * `morse` - morse code translator
-  * `minesweeper` - classic game of minesweeper
